@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import App from './App'
 import reportWebVitals from './reportWebVitals'
+import App from './i1-main/m1-ui/u1-app/App'
 
 ReactDOM.render(
-    <React.StrictMode>
+    <React.StrictMode> {/*of if release*/}
         <App/>
     </React.StrictMode>,
     document.getElementById('root')
