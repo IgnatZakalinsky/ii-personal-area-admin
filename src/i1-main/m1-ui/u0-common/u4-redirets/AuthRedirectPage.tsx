@@ -1,11 +1,13 @@
 import React, {DetailedHTMLProps, HTMLAttributes, useEffect, useState} from 'react'
 import {useSelector} from 'react-redux'
 import {message} from 'antd'
-import {Redirect} from 'react-router-dom'
+// import {Redirect} from 'react-router-dom'
 import CustomSpin from '../u5-spins/CustomSpin'
 import {appThunks, selectApp} from '../../../m2-bll/appReducer'
-import {PATH} from '../../u3-routes/Routes'
+// import {PATH} from '../../u3-routes/Routes'
 import {useActions} from '../../../m2-bll/helpers'
+import s from './AuthRedirectPage.module.css'
+import Laba from '../u6-links/Laba'
 
 type DivPropsType = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 
@@ -19,32 +21,41 @@ const AuthRedirectPage: React.FC<AuthRedirectPagePropsType> = React.memo((
         ...restProps
     }
 ) => {
-    const {isVerified, isLoading, error} = useSelector(selectApp);
-    const [firstRendering, setFirstRendering] = useState<boolean>(true);
-    const [redirect, setRedirect] = useState<boolean>(false);
+    const {isVerified, isLoading, error} = useSelector(selectApp)
+    const [isFirstRendering, setFirstRendering] = useState<boolean>(true)
+    const [isRedirect, setRedirect] = useState<boolean>(false)
     const [spin, setSpin] = useState<boolean>(!isVerified)
-    // const {meThunk} = useActions({...appThunks})
+    const {loginThunk} = useActions({...appThunks})
 
     useEffect(() => {
-        if (firstRendering) {
+        if (isFirstRendering) {
 
             if (!isVerified) {
-                // meThunk({})
+                loginThunk({})
             }
             setFirstRendering(false) // + rerender
         } else {
-            if (!isVerified && !isLoading && !redirect) {
+            if (!isVerified && !isLoading && !isRedirect) {
                 message.error('Not logged in! ' + error)
                 setTimeout(() => setRedirect(true), 1500);
             } else {
                 spin && !isLoading && setSpin(false)
             }
         }
-    }, [firstRendering, setFirstRendering, isVerified, setRedirect, spin, setSpin, isLoading, redirect,
-        // meThunk,
-        error]);
+    }, [
+        isFirstRendering, setFirstRendering, isVerified, setRedirect, spin, setSpin, isLoading, isRedirect, loginThunk,
+        error
+    ]);
 
-    // if (redirect) return <Redirect to={PATH.LOGIN}/>
+    if (isRedirect) {
+        // return <Redirect to={PATH.LOGIN}/>
+        return (
+            <div className={s.redirect}>
+                <span className={s.text}>For login - go to:</span>
+                <Laba/>
+            </div>
+        )
+    }
     if (spin) return <CustomSpin/>
 
     return (

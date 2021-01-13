@@ -7,3 +7,8 @@ export const instance = axios.create({
     baseURL,
     withCredentials: true,
 })
+
+export const loginInstance = axios.create({
+    baseURL: 'https://labs-api.staging.it-kamasutra.com/api/',
+    withCredentials: true,
+})

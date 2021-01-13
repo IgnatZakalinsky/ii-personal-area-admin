@@ -4,6 +4,9 @@ import {NavLink} from 'react-router-dom'
 import {PATH} from '../u3-routes/Routes'
 import {selectApp} from '../../m2-bll/appReducer'
 import {useSelector} from 'react-redux'
+import ItIncub from '../u0-common/u6-links/ItIncub'
+import Laba from '../u0-common/u6-links/Laba'
+import s from './Header.module.css'
 
 const Header = React.memo(() => {
     const {isVerified} = useSelector(selectApp)
@@ -17,13 +20,14 @@ const Header = React.memo(() => {
                     </>
                 )}
                 subTitle={(
-                    <a
-                        href={'https://it-incubator.by/'}
-                        rel='noopener noreferrer'
-                        target='_blank'
-                    >
-                        it-incub
-                    </a>
+                    <div className={s.subTitle}>
+                        <div>
+                            <ItIncub/>
+                            <span className={s.comma}>,</span>
+                        </div>
+                        <Laba/>
+                    </div>
+
                 )}
                 extra={[
                     isVerified && <NavLink to={PATH.PLAYLISTS} key={PATH.PLAYLISTS}>PLAYLISTS</NavLink>,

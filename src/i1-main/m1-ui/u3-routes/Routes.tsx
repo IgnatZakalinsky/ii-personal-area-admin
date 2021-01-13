@@ -20,7 +20,7 @@ const Routes = () => {
             {/*    render={() => <AuthRedirectPage><VideosPage/></AuthRedirectPage>}*/}
             {/*/>*/}
 
-            <Route render={() => <div>404</div>}/>
+            <Route render={() => <AuthRedirectPage><div>404</div></AuthRedirectPage>}/>
         </Switch>
     )
 }

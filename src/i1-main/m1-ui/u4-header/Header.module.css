@@ -1,0 +1,8 @@
+.subTitle {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.subTitle .comma {
+    margin-right: 5px;
+}
