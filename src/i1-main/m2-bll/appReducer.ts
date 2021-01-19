@@ -49,8 +49,9 @@ export const loginThunk = createAsyncThunk<{ user: UserType }, void, { rejectVal
         thunkAPI.dispatch(appActions.setLoading({isLoading: true}))
 
         try {
-            const p = await MainAPI.login()
-            // const p = {user: defUser}
+            const {token} = await MainAPI.login()
+            // const p = await MainAPI.me(token)
+            const p = {user: defUser}
 
             thunkAPI.dispatch(appActions.setVerified({isVerified: true, user: p.user}))
 

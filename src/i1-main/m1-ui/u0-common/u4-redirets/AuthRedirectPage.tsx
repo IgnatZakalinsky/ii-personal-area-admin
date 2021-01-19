@@ -39,7 +39,7 @@ const AuthRedirectPage: React.FC<AuthRedirectPagePropsType> = React.memo((
                 message.error('Not logged in! ' + error)
                 setTimeout(() => setRedirect(true), 1500);
             } else {
-                spin && !isLoading && setSpin(false)
+                spin && isVerified && setSpin(false)
             }
         }
     }, [
