@@ -1,0 +1,26 @@
+.pl {
+    display: flex;
+    max-width: calc(100vw - 48px);
+    overflow: hidden;
+}
+
+.name {
+    width: 30vw;
+    overflow: hidden;
+}
+.tags {
+    width: 30vw;
+    overflow: hidden;
+}
+.created {
+    display: flex;
+    flex-wrap: wrap;
+    width: 15vw;
+    overflow: hidden;
+}
+.updated {
+    display: flex;
+    flex-wrap: wrap;
+    width: 15vw;
+    overflow: hidden;
+}

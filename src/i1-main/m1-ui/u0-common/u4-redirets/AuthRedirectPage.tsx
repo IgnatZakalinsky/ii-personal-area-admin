@@ -59,9 +59,9 @@ const AuthRedirectPage: React.FC<AuthRedirectPagePropsType> = React.memo((
     if (spin) return <CustomSpin/>
 
     return (
-        <>
+        <div style={{padding: 24}}>
             <div {...restProps}/>
-        </>
+        </div>
     )
 })
 
