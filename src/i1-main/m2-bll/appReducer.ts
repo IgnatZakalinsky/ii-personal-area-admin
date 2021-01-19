@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {AppStoreType} from './store'
 import {MainAPI} from '../m3-dal/MainAPI'
+import {message} from 'antd'
 // import {LoginAPI} from '../../i2-features/f1-login/l3-dal/LoginAPI'
 
 const defUser: UserType = {
@@ -50,6 +51,8 @@ export const loginThunk = createAsyncThunk<{ user: UserType }, void, { rejectVal
 
         try {
             const {token} = await MainAPI.login()
+            message.success('Login ok')
+
             // const p = await MainAPI.me(token)
             const p = {user: defUser}
 
@@ -62,6 +65,7 @@ export const loginThunk = createAsyncThunk<{ user: UserType }, void, { rejectVal
 
             console.log('er', {...er}, er)
             console.log('error:', error)
+            message.error(error)
             return thunkAPI.rejectWithValue({error})
         }
     }

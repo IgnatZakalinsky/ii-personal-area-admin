@@ -42,3 +42,55 @@ export const PlaylistsAPI = {
     },
 
 }
+
+export const MockPlaylistsAPI = {
+    getAll: () => {
+        // return instance.get<GetAllAnswerType>('playlists')
+        //     .then(res => res.data)
+
+        return new Promise<GetAllAnswerType>((resolve, reject) => {
+            const playlists = [
+                {
+                    _id: '1',
+                    name: 'Курс "React JS - путь самурая 1.0", уроки, практика',
+                    levelAccess: 0,
+                    tags: ['react', 'redux',],
+                    created: new Date().toString(),
+                    updated: new Date().toString(),
+                },
+                {
+                    _id: '2',
+                    name: '#lesson_01',
+                    levelAccess: 100,
+                    tags: ['start', 'component', 'props',],
+                    created: new Date().toString(),
+                    updated: new Date().toString(),
+                },
+            ] as PlaylistType[]
+            setTimeout(() => {
+                // ok
+                resolve({playlists, playlistsTotalCount: 2})
+
+                // error
+                // reject({message: 'x'})
+            }, 5000)
+        })
+    },
+    // add: (data: any) => {
+    //     return instance.post<GetAllAnswerType>('playlists2', data)
+    //         .then(res => res.data)
+    // },
+    // delete: (id: string) => {
+    //     return instance.delete<GetAllAnswerType>('playlists/' + id)
+    //         .then(res => res.data)
+    // },
+    // update: (id: string) => {
+    //     return instance.put<GetAllAnswerType>('playlists', {
+    //         playlist: {
+    //             _id: id,
+    //             name: 'new Pl',
+    //         }
+    //     })
+    //         .then(res => res.data)
+    // },
+}

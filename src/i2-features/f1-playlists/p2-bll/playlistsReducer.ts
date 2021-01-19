@@ -1,10 +1,16 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {AppStoreType} from '../../../i1-main/m2-bll/store'
-import {PlaylistsAPI, PlaylistType} from '../p3-dal/PlaylistsAPI'
+import {PlaylistsAPI, PlaylistType, MockPlaylistsAPI} from '../p3-dal/PlaylistsAPI'
 import {appActions} from '../../../i1-main/m2-bll/appReducer'
+import {message} from "antd";
+
+export type GetPlaylistsType = {
+    playlists: PlaylistType[]
+    playlistsTotalCount: number
+}
 
 // < {answer}, {params}, {rejectValue {in catch}}>
-export const getPlaylists = createAsyncThunk<{ playlists: PlaylistType[] }, {}, { rejectValue: { error: any } }>(
+export const getPlaylists = createAsyncThunk<GetPlaylistsType, {}, { rejectValue: { error: any } }>(
     'playlists/getPlaylists',
     async (payload, thunkAPI
     ) => {
@@ -12,14 +18,15 @@ export const getPlaylists = createAsyncThunk<{ playlists: PlaylistType[] }, {}, 
         thunkAPI.dispatch(appActions.setLoading({isLoading: true}))
 
         try {
-            const p = await PlaylistsAPI.getAll()
+            // const p = await PlaylistsAPI.getAll()
+            const p = await MockPlaylistsAPI.getAll()
 
             thunkAPI.dispatch(appActions.setLoading({isLoading: false}))
 
-            return {playlists: p.playlists}
+            return p
         } catch (er) {
-
-            console.log('er', {...er}, er)
+            const error = er.response ? er.response.data.error : (er.message + ', more details in the console')
+            message.error(error)
             thunkAPI.dispatch(appActions.setLoading({isLoading: false}))
             return thunkAPI.rejectWithValue({error: {...er}})
         }
@@ -95,24 +102,9 @@ export const getPlaylists = createAsyncThunk<{ playlists: PlaylistType[] }, {}, 
 const slice = createSlice({
     name: 'playlists',
     initialState: {
-        playlists: [
-            {
-                _id: '1',
-                name: 'Курс "React JS - путь самурая 1.0", уроки, практика',
-                levelAccess: 0,
-                tags: ['react', 'redux',],
-                created: new Date().toString(),
-                updated: new Date().toString(),
-            },
-            {
-                _id: '2',
-                name: '#lesson_01',
-                levelAccess: 100,
-                tags: ['start', 'component', 'props',],
-                created: new Date().toString(),
-                updated: new Date().toString(),
-            },
-        ] as PlaylistType[]
+        playlists: [] as PlaylistType[],
+        playlistsTotalCount: 0,
+
     },
     reducers: {
         // setX: (state, action: PayloadAction<{ x: number }>) => {
@@ -134,6 +126,7 @@ const slice = createSlice({
                 getPlaylists.fulfilled,
                 (state, action) => {
                     state.playlists = action.payload.playlists
+                    state.playlistsTotalCount = action.payload.playlistsTotalCount
                 }
             )
         // .addCase() ...
@@ -143,7 +136,10 @@ const slice = createSlice({
 
 export const playlistsReducer = slice.reducer
 export const playlistsActions = slice.actions
-// export const playlistsThunks = {getPlaylists, addPlaylist, deletePlaylist, updatePlaylist}
+export const playlistsThunks = {
+    getPlaylists,
+    // addPlaylist, deletePlaylist, updatePlaylist
+}
 // export const someThunkRej = someThunk.rejected
 // export const appThunks = {someThunk}
 //
