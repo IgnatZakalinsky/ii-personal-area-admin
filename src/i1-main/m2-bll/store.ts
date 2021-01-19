@@ -1,10 +1,12 @@
 import thunkMiddleware from 'redux-thunk'
 import {combineReducers} from 'redux'
-import {appReducer} from './appReducer'
 import {configureStore} from '@reduxjs/toolkit'
+import {appReducer} from './appReducer'
+import {playlistsReducer} from '../../i2-features/f1-playlists/p2-bll/playlistsReducer'
 
 const reducers = combineReducers({
     app: appReducer,
+    playlists: playlistsReducer,
 
 })
 
