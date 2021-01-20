@@ -18,8 +18,8 @@ export const getPlaylists = createAsyncThunk<GetPlaylistsType, {}, { rejectValue
         thunkAPI.dispatch(appActions.setLoading({isLoading: true}))
 
         try {
-            // const p = await PlaylistsAPI.getAll()
-            const p = await MockPlaylistsAPI.getAll()
+            const p = await PlaylistsAPI.getAll()
+            // const p = await MockPlaylistsAPI.getAll()
 
             thunkAPI.dispatch(appActions.setLoading({isLoading: false}))
 
