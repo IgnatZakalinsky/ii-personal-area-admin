@@ -31,7 +31,7 @@ export const addPlaylist = createAsyncThunk<{}, {}, { rejectValue: { error: stri
     async (payload, thunkAPI
     ) => {
         return thunkTryCatch(thunkAPI, async () => {
-            await MockPlaylistsAPI.add(undefined)
+            await PlaylistsAPI.add(undefined)
             message.success('add playlist - ok')
 
             thunkAPI.dispatch(getPlaylists({}))
