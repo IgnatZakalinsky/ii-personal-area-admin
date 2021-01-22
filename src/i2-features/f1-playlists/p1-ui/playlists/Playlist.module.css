@@ -5,22 +5,33 @@
 }
 
 .name {
-    width: 30vw;
+    width: 25vw;
     overflow: hidden;
 }
+
 .tags {
-    width: 30vw;
+    width: 24vw;
     overflow: hidden;
 }
+
 .created {
     display: flex;
     flex-wrap: wrap;
     width: 15vw;
     overflow: hidden;
 }
+
 .updated {
     display: flex;
     flex-wrap: wrap;
     width: 15vw;
+    overflow: hidden;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    width: 21vw;
     overflow: hidden;
 }

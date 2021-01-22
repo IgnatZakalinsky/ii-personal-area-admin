@@ -23,21 +23,14 @@ const Playlist: React.FC<PlaylistPropsType> = ({playlist}) => {
                 <NavLink to={PATH.VIDEOS + '/' + playlist._id} className={s.name}>{playlist.name}</NavLink>
                 <div className={s.tags}>{mappedTags}</div>
                 <div className={s.updated}>
-                    <span>
-                        {updated[0]}.{updated[1]}
-                    </span>
-                    <span>
-                        .{updated[2]}
-                    </span>
+                    <span>{updated[0]}.{updated[1]}</span>
+                    <span>.{updated[2]}</span>
                 </div>
                 <div className={s.created}>
-                    <span>
-                        {created[0]}.{created[1]}
-                    </span>
-                    <span>
-                        .{created[2]}
-                    </span>
+                    <span>{created[0]}.{created[1]}</span>
+                    <span>.{created[2]}</span>
                 </div>
+                <div className={s.buttons}></div>
             </div>
             <Divider/>
         </>
