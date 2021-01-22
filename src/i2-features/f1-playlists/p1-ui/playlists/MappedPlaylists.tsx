@@ -13,7 +13,7 @@ const MappedPlaylists = () => {
     const {isLoading} = useSelector(selectApp)
 
     const dispatch = useDispatch()
-    const {getPlaylists} = playlistsThunks
+    const {getPlaylists, addPlaylist} = playlistsThunks
 
     useEffect(() => {
         if (!playlists.length) {
@@ -21,12 +21,16 @@ const MappedPlaylists = () => {
         }
     }, [playlists.length, dispatch, getPlaylists])
 
+    const addPlaylistCallback = () => {
+        dispatch(addPlaylist({}))
+    }
+
     const mappedPlaylists = playlists.map(p => (<Playlist key={p._id} playlist={p}/>))
 
     return (
         <div className={s.main}>
 
-            {isLoading ? (
+            {isLoading && !playlists.length ? (
                 <CustomSpin/>
             ) : (
                 <>
@@ -37,7 +41,7 @@ const MappedPlaylists = () => {
                         <div className={s2.updated}>updated</div>
                         <div className={s2.created}>created</div>
                         <div className={s2.buttons}>
-                            <Button>add</Button>
+                            <Button disabled={isLoading} onClick={addPlaylistCallback}>add</Button>
                             {/*<Button>add</Button>*/}
                         </div>
                     </div>

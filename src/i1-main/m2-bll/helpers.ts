@@ -2,6 +2,8 @@ import {useDispatch} from 'react-redux'
 import {ActionCreatorsMapObject, bindActionCreators} from 'redux'
 import {useMemo} from 'react'
 import store from './store'
+import {appActions} from './appReducer'
+import {message} from 'antd'
 
 export type AppDispatchType = typeof store.dispatch
 export const useAppDispatch = () => useDispatch<AppDispatchType>()
@@ -22,4 +24,17 @@ export const useActions = <T extends ActionCreatorsMapObject>(actions: T) => {
     // return useMemo(() => bindActionCreators<T, any>(actions, dispatch), [actions, dispatch])
     return useMemo(() =>
         bindActionCreators<T, RemapActionCreators<T>>(actions, dispatch), [actions, dispatch])
+}
+
+// BaseThunkAPI need import
+export const thunkTryCatch = async (thunkAPI: any  , logic: Function) => {
+    thunkAPI.dispatch(appActions.setLoading({isLoading: true}))
+    try {
+        return await logic()
+    } catch (e) {
+        const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
+        message.error(error)
+        thunkAPI.dispatch(appActions.setLoading({isLoading: false}))
+        return thunkAPI.rejectWithValue({error})
+    }
 }

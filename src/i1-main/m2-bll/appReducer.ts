@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {AppStoreType} from './store'
 import {MainAPI} from '../m3-dal/MainAPI'
 import {message} from 'antd'
+import {thunkTryCatch} from "./helpers";
 // import {LoginAPI} from '../../i2-features/f1-login/l3-dal/LoginAPI'
 
 const defUser: UserType = {
@@ -47,9 +48,7 @@ export const loginThunk = createAsyncThunk<{ user: UserType }, void, { rejectVal
     'app/loginThunk',
     async (payload, thunkAPI
     ) => {
-        thunkAPI.dispatch(appActions.setLoading({isLoading: true}))
-
-        try {
+        return thunkTryCatch(thunkAPI, async () => {
             const {token} = await MainAPI.login()
             message.success('Login ok')
 
@@ -59,15 +58,7 @@ export const loginThunk = createAsyncThunk<{ user: UserType }, void, { rejectVal
             thunkAPI.dispatch(appActions.setVerified({isVerified: true, user: p.user}))
 
             return p
-        } catch (er) {
-            const error = er.response ? er.response.data.error : (er.message + ', more details in the console')
-            thunkAPI.dispatch(appActions.setVerified({isVerified: false, user: defUser, error}))
-
-            console.log('er', {...er}, er)
-            console.log('error:', error)
-            message.error(error)
-            return thunkAPI.rejectWithValue({error})
-        }
+        })
     }
 )
 // export const meThunk = createAsyncThunk<{ error?: string }, void, { rejectValue: void }>(

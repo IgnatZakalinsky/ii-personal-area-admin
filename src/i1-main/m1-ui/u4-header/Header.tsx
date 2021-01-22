@@ -9,7 +9,11 @@ import Laba from '../u0-common/u6-links/Laba'
 import s from './Header.module.css'
 
 const Header = React.memo(() => {
-    const {isVerified} = useSelector(selectApp)
+    const {isVerified, isLoading} = useSelector(selectApp)
+
+    const onClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        if(isLoading) e.preventDefault()
+    }
 
     return (
         <>
@@ -30,7 +34,9 @@ const Header = React.memo(() => {
 
                 )}
                 extra={[
-                    isVerified && <NavLink to={PATH.PLAYLISTS} key={PATH.PLAYLISTS}>PLAYLISTS</NavLink>,
+                    isVerified && (
+                        <NavLink to={PATH.PLAYLISTS} key={PATH.PLAYLISTS} onClick={onClick}>PLAYLISTS</NavLink>
+                    ),
 
                 ]}
             />

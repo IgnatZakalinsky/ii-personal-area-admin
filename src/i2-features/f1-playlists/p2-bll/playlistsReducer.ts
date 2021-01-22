@@ -3,6 +3,7 @@ import {AppStoreType} from '../../../i1-main/m2-bll/store'
 import {PlaylistsAPI, PlaylistType, MockPlaylistsAPI} from '../p3-dal/PlaylistsAPI'
 import {appActions} from '../../../i1-main/m2-bll/appReducer'
 import {message} from "antd";
+import {thunkTryCatch} from "../../../i1-main/m2-bll/helpers";
 
 export type GetPlaylistsType = {
     playlists: PlaylistType[]
@@ -10,50 +11,35 @@ export type GetPlaylistsType = {
 }
 
 // < {answer}, {params}, {rejectValue {in catch}}>
-export const getPlaylists = createAsyncThunk<GetPlaylistsType, {}, { rejectValue: { error: any } }>(
+export const getPlaylists = createAsyncThunk<GetPlaylistsType, {}, { rejectValue: { error: string } }>(
     'playlists/getPlaylists',
     async (payload, thunkAPI
     ) => {
         // thunkAPI.getState() as AppStoreType
-        thunkAPI.dispatch(appActions.setLoading({isLoading: true}))
-
-        try {
+        return thunkTryCatch(thunkAPI, async () => {
             const p = await PlaylistsAPI.getAll()
             // const p = await MockPlaylistsAPI.getAll()
 
             thunkAPI.dispatch(appActions.setLoading({isLoading: false}))
 
             return p
-        } catch (er) {
-            const error = er.response ? er.response.data.error : (er.message + ', more details in the console')
-            message.error(error)
-            thunkAPI.dispatch(appActions.setLoading({isLoading: false}))
-            return thunkAPI.rejectWithValue({error: {...er}})
-        }
+        })
     }
 )
-// export const addPlaylist = createAsyncThunk<{}, {}, { rejectValue: { error: any } }>(
-//     'playlists/addPlaylist',
-//     async (payload, thunkAPI
-//     ) => {
-//         thunkAPI.dispatch(appActions.setLoading({isLoading: true}))
-//         try {
-//             await PlaylistsAPI.add(undefined)
-//
-//
-//             // thunkAPI.dispatch(getPlaylists({}))
-//
-//             return;
-//         } catch (e) {
-//             const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
-//
-//             console.log('Nya, ' + 'playlists' + ' Error!', {...e})
-//
-//             console.log('error: ', error)
-//             thunkAPI.dispatch(appActions.setLoading({isLoading: false}))
-//             return thunkAPI.rejectWithValue({error: error})
-//         }
-//     })
+export const addPlaylist = createAsyncThunk<{}, {}, { rejectValue: { error: string } }>(
+    'playlists/addPlaylist',
+    async (payload, thunkAPI
+    ) => {
+        return thunkTryCatch(thunkAPI, async () => {
+            await MockPlaylistsAPI.add(undefined)
+            message.success('add playlist - ok')
+
+            thunkAPI.dispatch(getPlaylists({}))
+
+            return;
+        })
+    }
+)
 // export const deletePlaylist = createAsyncThunk<{}, {id: string}, { rejectValue: { error: any } }>(
 //     'playlists/deletePlaylist',
 //     async (payload, thunkAPI
@@ -137,8 +123,8 @@ const slice = createSlice({
 export const playlistsReducer = slice.reducer
 export const playlistsActions = slice.actions
 export const playlistsThunks = {
-    getPlaylists,
-    // addPlaylist, deletePlaylist, updatePlaylist
+    getPlaylists, addPlaylist,
+    // deletePlaylist, updatePlaylist
 }
 // export const someThunkRej = someThunk.rejected
 // export const appThunks = {someThunk}

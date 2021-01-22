@@ -17,6 +17,7 @@ export type GetAllAnswerType = {
     playlists: PlaylistType[]
     playlistsTotalCount: number
 }
+export type AddAnswerType = {}
 
 export const PlaylistsAPI = {
     getAll: () => {
@@ -24,7 +25,7 @@ export const PlaylistsAPI = {
             .then(res => res.data)
     },
     add: (data: any) => {
-        return instance.post<GetAllAnswerType>('playlists2', data)
+        return instance.post<AddAnswerType>('playlists', data)
             .then(res => res.data)
     },
     delete: (id: string) => {
@@ -45,9 +46,6 @@ export const PlaylistsAPI = {
 
 export const MockPlaylistsAPI = {
     getAll: () => {
-        // return instance.get<GetAllAnswerType>('playlists')
-        //     .then(res => res.data)
-
         return new Promise<GetAllAnswerType>((resolve, reject) => {
             const playlists = [
                 {
@@ -76,6 +74,18 @@ export const MockPlaylistsAPI = {
             }, 5000)
         })
     },
+    add: (data: any) => {
+        return new Promise<AddAnswerType>((resolve, reject) => {
+            setTimeout(() => {
+                // ok
+                // resolve({})
+
+                // error
+                reject({message: 'x'})
+            }, 5000)
+        })
+    },
+
     // add: (data: any) => {
     //     return instance.post<GetAllAnswerType>('playlists2', data)
     //         .then(res => res.data)
