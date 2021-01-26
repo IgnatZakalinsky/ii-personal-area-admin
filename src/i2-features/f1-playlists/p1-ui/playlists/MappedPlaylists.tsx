@@ -22,7 +22,13 @@ const MappedPlaylists = () => {
     }, [playlists.length, dispatch, getPlaylists])
 
     const addPlaylistCallback = () => {
-        dispatch(addPlaylist({}))
+        dispatch(addPlaylist({
+            playlist: {
+                name: 'testPl',
+                levelAccess: 0,
+                tags: ['testTg'],
+            }
+        }))
     }
 
     const mappedPlaylists = playlists.map(p => (<Playlist key={p._id} playlist={p}/>))

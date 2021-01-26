@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {AppStoreType} from '../../../i1-main/m2-bll/store'
-import {PlaylistsAPI, PlaylistType, MockPlaylistsAPI} from '../p3-dal/PlaylistsAPI'
+import {PlaylistsAPI, PlaylistType, MockPlaylistsAPI, ForCreatePlaylistType} from '../p3-dal/PlaylistsAPI'
 import {appActions} from '../../../i1-main/m2-bll/appReducer'
 import {message} from "antd";
 import {thunkTryCatch} from "../../../i1-main/m2-bll/helpers";
@@ -26,12 +26,12 @@ export const getPlaylists = createAsyncThunk<GetPlaylistsType, {}, { rejectValue
         })
     }
 )
-export const addPlaylist = createAsyncThunk<{}, {}, { rejectValue: { error: string } }>(
+export const addPlaylist = createAsyncThunk<{}, { playlist: ForCreatePlaylistType }, { rejectValue: { error: string } }>(
     'playlists/addPlaylist',
     async (payload, thunkAPI
     ) => {
         return thunkTryCatch(thunkAPI, async () => {
-            await PlaylistsAPI.add(undefined)
+            await PlaylistsAPI.add(payload.playlist)
             message.success('add playlist - ok')
 
             thunkAPI.dispatch(getPlaylists({}))

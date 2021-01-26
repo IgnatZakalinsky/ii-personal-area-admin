@@ -1,5 +1,11 @@
 import {instance} from '../../../i1-main/m3-dal/instance'
 
+export type ForCreatePlaylistType = {
+    name: string
+    levelAccess: number
+    tags: string[]
+}
+
 export type PlaylistType = {
     _id: string
 
@@ -24,8 +30,10 @@ export const PlaylistsAPI = {
         return instance.get<GetAllAnswerType>('playlists')
             .then(res => res.data)
     },
-    add: (data: any) => {
-        return instance.post<AddAnswerType>('playlists', data)
+    add: (data: ForCreatePlaylistType) => {
+        return instance.post<AddAnswerType>('playlists', {
+            playlist: data
+        })
             .then(res => res.data)
     },
     delete: (id: string) => {
