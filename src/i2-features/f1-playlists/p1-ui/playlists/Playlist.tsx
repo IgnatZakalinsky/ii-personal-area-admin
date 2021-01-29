@@ -4,6 +4,9 @@ import {NavLink} from 'react-router-dom'
 import {PATH} from '../../../../i1-main/m1-ui/u3-routes/Routes'
 import {Button, Divider, Modal} from 'antd'
 import {PlaylistType} from '../../p3-dal/PlaylistsAPI'
+import {playlistsThunks} from '../../p2-bll/playlistsReducer'
+import {useDispatch, useSelector} from 'react-redux'
+import {selectApp} from "../../../../i1-main/m2-bll/appReducer";
 
 type PlaylistPropsType = {
     playlist: PlaylistType
@@ -12,15 +15,18 @@ type PlaylistPropsType = {
 const Playlist: React.FC<PlaylistPropsType> = React.memo(({playlist}) => {
     const [showDel, setShowDel] = useState(false)
     const [showUpd, setShowUpd] = useState(false)
+    const {deletePlaylist} = playlistsThunks
+    const {isLoading} = useSelector(selectApp)
 
     const mappedTags = playlist.tags.map((t, i) => (
         <span key={playlist._id + i}>#{t} </span>
     ))
 
+    const dispatch = useDispatch()
     const onDel = useCallback(() => setShowDel(true), [setShowDel])
     const closeDel = useCallback(() => setShowDel(false), [setShowDel])
     const delPlaylist = () => {
-        console.log('+')
+        dispatch(deletePlaylist({id: playlist._id}))
 
         closeDel()
     }
@@ -42,8 +48,9 @@ const Playlist: React.FC<PlaylistPropsType> = React.memo(({playlist}) => {
                     <span>.{created[2]}</span>
                 </div>
                 <div className={s.buttons}>
-                    <Button>upd</Button>
+                    <Button disabled={isLoading}>upd</Button>
                     <Button danger onClick={onDel}>del</Button>
+                    {/*<Button disabled={isLoading} danger onClick={delPlaylist}>del</Button>*/}
 
                     <Modal
                         visible={showDel}
