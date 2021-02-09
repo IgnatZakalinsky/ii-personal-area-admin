@@ -48,14 +48,11 @@ export const PlaylistsAPI = {
         return instance.delete<GetAllAnswerType>('playlists/' + id, {params: {token}})
             .then(res => res.data)
     },
-    update: (id: string) => {
+    update: (playlist: PlaylistType) => {
         const token = restoreState(PERS_AREA_ADMIN_TOKEN, '')
 
         return instance.put<GetAllAnswerType>('playlists', {
-            playlist: {
-                _id: id,
-                name: 'new Pl',
-            },
+            playlist,
             token,
         })
             .then(res => res.data)

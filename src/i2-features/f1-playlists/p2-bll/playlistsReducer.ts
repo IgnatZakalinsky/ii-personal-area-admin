@@ -54,28 +54,19 @@ export const deletePlaylist = createAsyncThunk<{}, { id: string }, { rejectValue
         })
     }
 )
-// export const updatePlaylist = createAsyncThunk<{}, {id: string}, { rejectValue: { error: any } }>(
-//     'playlists/updatePlaylist',
-//     async (payload, thunkAPI
-//     ) => {
-//         thunkAPI.dispatch(appActions.setLoading({isLoading: true}))
-//         try {
-//             await PlaylistsAPI.update(payload.id)
-//
-//
-//             thunkAPI.dispatch(getPlaylists({}))
-//
-//             return;
-//         } catch (e) {
-//             const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
-//
-//             console.log('Nya, ' + 'playlists' + ' Error!', {...e})
-//
-//             console.log('error: ', error)
-//             thunkAPI.dispatch(appActions.setLoading({isLoading: false}))
-//             return thunkAPI.rejectWithValue({error: error})
-//         }
-//     })
+export const updatePlaylist = createAsyncThunk<{}, { playlist: PlaylistType }, { rejectValue: { error: any } }>(
+    'playlists/updatePlaylist',
+    async (payload, thunkAPI
+    ) => {
+        return thunkTryCatch(thunkAPI, async () => {
+            await PlaylistsAPI.update(payload.playlist)
+
+            thunkAPI.dispatch(getPlaylists({}))
+
+            return;
+        })
+    }
+)
 
 const slice = createSlice({
     name: 'playlists',
@@ -114,11 +105,8 @@ const slice = createSlice({
 
 export const playlistsReducer = slice.reducer
 export const playlistsActions = slice.actions
-export const playlistsThunks = {
-    getPlaylists, addPlaylist, deletePlaylist,
-    // updatePlaylist
-}
+export const playlistsThunks = {getPlaylists, addPlaylist, deletePlaylist, updatePlaylist}
 // export const someThunkRej = someThunk.rejected
 // export const appThunks = {someThunk}
-//
+
 export const selectPlaylists = (state: AppStoreType) => state.playlists

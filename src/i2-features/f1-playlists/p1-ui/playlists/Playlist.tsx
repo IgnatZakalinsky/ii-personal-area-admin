@@ -5,8 +5,10 @@ import {PATH} from '../../../../i1-main/m1-ui/u3-routes/Routes'
 import {Button, Divider, Modal} from 'antd'
 import {PlaylistType} from '../../p3-dal/PlaylistsAPI'
 import {playlistsThunks} from '../../p2-bll/playlistsReducer'
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 import {selectApp} from "../../../../i1-main/m2-bll/appReducer";
+import {useActions} from "../../../../i1-main/m2-bll/helpers";
+import PlaylistModal from "./PlaylistModal";
 
 type PlaylistPropsType = {
     playlist: PlaylistType
@@ -15,20 +17,32 @@ type PlaylistPropsType = {
 const Playlist: React.FC<PlaylistPropsType> = React.memo(({playlist}) => {
     const [showDel, setShowDel] = useState(false)
     const [showUpd, setShowUpd] = useState(false)
-    const {deletePlaylist} = playlistsThunks
+    const {deletePlaylist, updatePlaylist} = useActions(playlistsThunks)
     const {isLoading} = useSelector(selectApp)
 
     const mappedTags = playlist.tags.map((t, i) => (
         <span key={playlist._id + i}>#{t} </span>
     ))
 
-    const dispatch = useDispatch()
     const onDel = useCallback(() => setShowDel(true), [setShowDel])
     const closeDel = useCallback(() => setShowDel(false), [setShowDel])
     const delPlaylist = () => {
-        dispatch(deletePlaylist({id: playlist._id}))
+        deletePlaylist({id: playlist._id})
 
         closeDel()
+    }
+    const onUpd = useCallback(() => setShowUpd(true), [setShowUpd])
+    const closeUpd = useCallback(() => setShowUpd(false), [setShowUpd])
+    const updPlaylistCallback = (name: string, levelAccess: number, tags: string[]) => {
+        updatePlaylist({
+            playlist: {
+                ...playlist,
+                name,
+                levelAccess,
+                tags,
+            }
+        })
+        closeUpd()
     }
 
     const updated = new Date(playlist.updated).toLocaleDateString().split('.')
@@ -36,6 +50,17 @@ const Playlist: React.FC<PlaylistPropsType> = React.memo(({playlist}) => {
 
     return (
         <>
+            {showUpd && (
+                <PlaylistModal
+                    show={showUpd}
+                    callback={updPlaylistCallback}
+                    close={closeUpd}
+                    defName={playlist.name}
+                    defLevelAccess={playlist.levelAccess}
+                    defTags={playlist.tags}
+                />
+            )}
+
             <div className={s.pl}>
                 <NavLink to={PATH.VIDEOS + '/' + playlist._id} className={s.name}>{playlist.name}</NavLink>
                 <div className={s.tags}>{mappedTags}</div>
@@ -48,7 +73,7 @@ const Playlist: React.FC<PlaylistPropsType> = React.memo(({playlist}) => {
                     <span>.{created[2]}</span>
                 </div>
                 <div className={s.buttons}>
-                    <Button disabled={isLoading}>upd</Button>
+                    <Button disabled={isLoading} onClick={onUpd}>upd</Button>
                     <Button danger onClick={onDel}>del</Button>
                     {/*<Button disabled={isLoading} danger onClick={delPlaylist}>del</Button>*/}
 
