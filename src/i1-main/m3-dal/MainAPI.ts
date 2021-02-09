@@ -1,14 +1,13 @@
 import {loginInstance} from './instance'
-import {UserType} from '../m2-bll/appReducer'
 
 type LoginType = {
     error?: string
     token: string
 }
-type MeType = {
-    error?: string
-    user: UserType
-}
+// type MeType = {
+//     error?: string
+//     user: UserType
+// }
 
 export const MainAPI = {
     login: async () => {
@@ -16,10 +15,10 @@ export const MainAPI = {
 
         return response.data
     },
-    me: async (token: string) => {
-        const response = await loginInstance.get<MeType>(`/auth/me/${token}`)
-
-        return response.data
-    },
+    // me: async (token: string) => {
+    //     const response = await loginInstance.get<MeType>(`/auth/me/${token}`)
+    //
+    //     return response.data
+    // },
 
 }

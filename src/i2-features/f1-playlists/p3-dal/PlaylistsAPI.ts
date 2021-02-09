@@ -1,4 +1,5 @@
 import {instance} from '../../../i1-main/m3-dal/instance'
+import {PERS_AREA_ADMIN_TOKEN, restoreState} from '../../../i1-main/m4-helpers/localStorage'
 
 export type ForCreatePlaylistType = {
     name: string
@@ -27,25 +28,35 @@ export type AddAnswerType = {}
 
 export const PlaylistsAPI = {
     getAll: () => {
-        return instance.get<GetAllAnswerType>('playlists')
+        const token = restoreState(PERS_AREA_ADMIN_TOKEN, '')
+
+        return instance.get<GetAllAnswerType>('playlists', {params: {token}})
             .then(res => res.data)
     },
     add: (data: ForCreatePlaylistType) => {
+        const token = restoreState(PERS_AREA_ADMIN_TOKEN, '')
+
         return instance.post<AddAnswerType>('playlists', {
-            playlist: data
+            playlist: data,
+            token,
         })
             .then(res => res.data)
     },
     delete: (id: string) => {
-        return instance.delete<GetAllAnswerType>('playlists/' + id)
+        const token = restoreState(PERS_AREA_ADMIN_TOKEN, '')
+
+        return instance.delete<GetAllAnswerType>('playlists/' + id, {params: {token}})
             .then(res => res.data)
     },
     update: (id: string) => {
+        const token = restoreState(PERS_AREA_ADMIN_TOKEN, '')
+
         return instance.put<GetAllAnswerType>('playlists', {
             playlist: {
                 _id: id,
                 name: 'new Pl',
-            }
+            },
+            token,
         })
             .then(res => res.data)
     },

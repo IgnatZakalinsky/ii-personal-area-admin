@@ -2,7 +2,8 @@ import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {AppStoreType} from './store'
 import {MainAPI} from '../m3-dal/MainAPI'
 import {message} from 'antd'
-import {thunkTryCatch} from "./helpers";
+import {thunkTryCatch} from './helpers'
+import {PERS_AREA_ADMIN_TOKEN, saveState} from '../m4-helpers/localStorage'
 // import {LoginAPI} from '../../i2-features/f1-login/l3-dal/LoginAPI'
 
 const defUser: UserType = {
@@ -52,7 +53,7 @@ export const loginThunk = createAsyncThunk<{ user: UserType }, void, { rejectVal
             const {token} = await MainAPI.login()
             message.success('Login ok')
 
-            // const p = await MainAPI.me(token)
+            saveState(PERS_AREA_ADMIN_TOKEN, token)
             const p = {user: defUser}
 
             thunkAPI.dispatch(appActions.setVerified({isVerified: true, user: p.user}))
