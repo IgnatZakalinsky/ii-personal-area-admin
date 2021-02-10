@@ -27,10 +27,16 @@ export type GetAllAnswerType = {
 export type AddAnswerType = {}
 
 export const PlaylistsAPI = {
-    getAll: () => {
+    getAll: (itemForPageCount: number, pageNumber: number) => {
         const token = restoreState(PERS_AREA_ADMIN_TOKEN, '')
 
-        return instance.get<GetAllAnswerType>('playlists', {params: {token}})
+        return instance.get<GetAllAnswerType>('playlists', {
+            params: {
+                token,
+                itemForPageCount,
+                pageNumber,
+            }
+        })
             .then(res => res.data)
     },
     add: (data: ForCreatePlaylistType) => {

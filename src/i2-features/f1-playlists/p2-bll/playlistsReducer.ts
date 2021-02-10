@@ -17,7 +17,10 @@ export const getPlaylists = createAsyncThunk<GetPlaylistsType, {}, { rejectValue
     ) => {
         // thunkAPI.getState() as AppStoreType
         return thunkTryCatch(thunkAPI, async () => {
-            const p = await PlaylistsAPI.getAll()
+            const {playlists} = thunkAPI.getState() as AppStoreType
+            const {itemForPageCount, pageNumber} = playlists
+
+            const p = await PlaylistsAPI.getAll(itemForPageCount, pageNumber)
             // const p = await MockPlaylistsAPI.getAll()
 
             thunkAPI.dispatch(appActions.setLoading({isLoading: false}))
@@ -73,12 +76,17 @@ const slice = createSlice({
     initialState: {
         playlists: [] as PlaylistType[],
         playlistsTotalCount: 0,
-
+        itemForPageCount: 7,
+        pageNumber: 1,
     },
     reducers: {
         // setX: (state, action: PayloadAction<{ x: number }>) => {
         //     state.x = action.payload.x
         // },
+        setPagination: (state, action: PayloadAction<{pageNumber: number, itemForPageCount: number}>) => {
+            state.itemForPageCount = action.payload.itemForPageCount
+            state.pageNumber = action.payload.pageNumber
+        },
 
     },
     // extraReducers: {

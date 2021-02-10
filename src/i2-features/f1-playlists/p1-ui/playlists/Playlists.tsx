@@ -1,5 +1,6 @@
 import React from 'react'
 import MappedPlaylists from './MappedPlaylists'
+import PlaylistPagination from './PlaylistPagination'
 
 const Playlists = () => {
 
@@ -7,9 +8,11 @@ const Playlists = () => {
         <>
             {/*find*/}
 
+            <PlaylistPagination/>
+            <br/>
             <MappedPlaylists/>
 
-            {/*pagination*/}
+            <PlaylistPagination/>
         </>
     )
 }
