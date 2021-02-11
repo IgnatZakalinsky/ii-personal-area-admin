@@ -76,9 +76,7 @@ const PlaylistModal: React.FC<PlaylistModalPropsType> = (
         <Modal
             visible={show}
             onOk={onOk}
-            okButtonProps={{
-                disabled: !name,
-            }}
+            okButtonProps={{disabled: !name}}
             onCancel={close}
         >
             <div>NEW PLAYLIST</div>
@@ -96,16 +94,16 @@ const PlaylistModal: React.FC<PlaylistModalPropsType> = (
             {isAddingTag ? (
                 <Input
                     autoFocus
-                    type="text"
-                    size="small"
-                    className="tag-input"
+                    type={'text'}
+                    size={'small'}
+                    className={'tag-input'}
                     value={tag}
                     onChange={changeTag}
                     onBlur={confirmTag}
                     onPressEnter={confirmTag}
                 />
             ) : (
-                <Tag className="site-tag-plus" onClick={addingTag}>
+                <Tag className={'site-tag-plus'} onClick={addingTag}>
                     + New Tag
                 </Tag>
             )}

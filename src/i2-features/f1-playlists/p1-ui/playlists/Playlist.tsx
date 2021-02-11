@@ -6,9 +6,9 @@ import {Button, Divider, Modal} from 'antd'
 import {PlaylistType} from '../../p3-dal/PlaylistsAPI'
 import {playlistsThunks} from '../../p2-bll/playlistsReducer'
 import {useSelector} from 'react-redux'
-import {selectApp} from "../../../../i1-main/m2-bll/appReducer";
-import {useActions} from "../../../../i1-main/m2-bll/helpers";
-import PlaylistModal from "./PlaylistModal";
+import {selectApp} from '../../../../i1-main/m2-bll/appReducer'
+import {useActions} from '../../../../i1-main/m2-bll/helpers'
+import PlaylistModal from './PlaylistModal'
 
 type PlaylistPropsType = {
     playlist: PlaylistType
@@ -45,8 +45,9 @@ const Playlist: React.FC<PlaylistPropsType> = React.memo(({playlist}) => {
         closeUpd()
     }
 
-    const updated = new Date(playlist.updated).toLocaleDateString().split('.')
-    const created = new Date(playlist.created).toLocaleDateString().split('.')
+    // const updated = new Date(playlist.updated).toLocaleDateString().split('.')
+    const updated = new Date(playlist.updated).toLocaleDateString()
+    const created = new Date(playlist.created).toLocaleDateString()
 
     return (
         <>
@@ -60,30 +61,32 @@ const Playlist: React.FC<PlaylistPropsType> = React.memo(({playlist}) => {
                     defTags={playlist.tags}
                 />
             )}
+            <Modal
+                visible={showDel}
+                onOk={delPlaylist}
+                onCancel={closeDel}
+            >
+                delete playlist {playlist.name}?
+            </Modal>
 
             <div className={s.pl}>
                 <NavLink to={PATH.VIDEOS + '/' + playlist._id} className={s.name}>{playlist.name}</NavLink>
+
+                <div className={s.lvl}>{playlist.levelAccess}</div>
+
                 <div className={s.tags}>{mappedTags}</div>
-                <div className={s.updated}>
-                    <span>{updated[0]}.{updated[1]}</span>
-                    <span>.{updated[2]}</span>
-                </div>
-                <div className={s.created}>
-                    <span>{created[0]}.{created[1]}</span>
-                    <span>.{created[2]}</span>
-                </div>
+
+                {/*<div className={s.updated}>*/}
+                {/*    <span>{updated[0]}.{updated[1]}</span>*/}
+                {/*    <span>.{updated[2]}</span>*/}
+                {/*</div>*/}
+                <div className={s.updated}>{updated}</div>
+
+                <div className={s.created}>{created}</div>
+
                 <div className={s.buttons}>
                     <Button disabled={isLoading} onClick={onUpd}>upd</Button>
-                    <Button danger onClick={onDel}>del</Button>
-                    {/*<Button disabled={isLoading} danger onClick={delPlaylist}>del</Button>*/}
-
-                    <Modal
-                        visible={showDel}
-                        onOk={delPlaylist}
-                        onCancel={closeDel}
-                    >
-                        delete playlist {playlist.name}?
-                    </Modal>
+                    <Button disabled={isLoading} danger onClick={onDel}>del</Button>
                 </div>
             </div>
             <Divider/>

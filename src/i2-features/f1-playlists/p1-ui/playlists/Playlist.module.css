@@ -1,29 +1,37 @@
 .pl {
     display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
     max-width: calc(100vw - 48px);
     overflow: hidden;
 }
 
 .name {
-    width: 25vw;
+    min-width: 115px;
+    width:15vw;
     overflow: hidden;
 }
 
+.lvl {
+    min-width: 99px;
+    width: 15vw;
+}
+
 .tags {
-    width: 24vw;
+    min-width: 108px;
+    width: 15vw;
     overflow: hidden;
 }
 
 .created {
-    display: flex;
-    flex-wrap: wrap;
+    min-width: 124px;
     width: 15vw;
     overflow: hidden;
 }
 
 .updated {
-    display: flex;
-    flex-wrap: wrap;
+    min-width: 130px;
     width: 15vw;
     overflow: hidden;
 }
@@ -32,6 +40,8 @@
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
-    width: 21vw;
+
+    min-width: 110px;
+    width: 15vw;
     overflow: hidden;
 }

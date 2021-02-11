@@ -27,7 +27,12 @@ export type GetAllAnswerType = {
 export type AddAnswerType = {}
 
 export const PlaylistsAPI = {
-    getAll: (itemForPageCount: number, pageNumber: number) => {
+    getAll: (
+        itemForPageCount: number,
+        pageNumber: number,
+        sort: string,
+        find: { levelAccess: number, tags: string[], name: string }
+    ) => {
         const token = restoreState(PERS_AREA_ADMIN_TOKEN, '')
 
         return instance.get<GetAllAnswerType>('playlists', {
@@ -35,6 +40,8 @@ export const PlaylistsAPI = {
                 token,
                 itemForPageCount,
                 pageNumber,
+                sort,
+                find
             }
         })
             .then(res => res.data)
@@ -66,63 +73,46 @@ export const PlaylistsAPI = {
 
 }
 
-export const MockPlaylistsAPI = {
-    getAll: () => {
-        return new Promise<GetAllAnswerType>((resolve, reject) => {
-            const playlists = [
-                {
-                    _id: '1',
-                    name: 'Курс "React JS - путь самурая 1.0", уроки, практика',
-                    levelAccess: 0,
-                    tags: ['react', 'redux',],
-                    created: new Date().toString(),
-                    updated: new Date().toString(),
-                },
-                {
-                    _id: '2',
-                    name: '#lesson_01',
-                    levelAccess: 100,
-                    tags: ['start', 'component', 'props',],
-                    created: new Date().toString(),
-                    updated: new Date().toString(),
-                },
-            ] as PlaylistType[]
-            setTimeout(() => {
-                // ok
-                resolve({playlists, playlistsTotalCount: 2})
-
-                // error
-                // reject({message: 'x'})
-            }, 5000)
-        })
-    },
-    add: (data: any) => {
-        return new Promise<AddAnswerType>((resolve, reject) => {
-            setTimeout(() => {
-                // ok
-                // resolve({})
-
-                // error
-                reject({message: 'x'})
-            }, 5000)
-        })
-    },
-
-    // add: (data: any) => {
-    //     return instance.post<GetAllAnswerType>('playlists2', data)
-    //         .then(res => res.data)
-    // },
-    // delete: (id: string) => {
-    //     return instance.delete<GetAllAnswerType>('playlists/' + id)
-    //         .then(res => res.data)
-    // },
-    // update: (id: string) => {
-    //     return instance.put<GetAllAnswerType>('playlists', {
-    //         playlist: {
-    //             _id: id,
-    //             name: 'new Pl',
-    //         }
-    //     })
-    //         .then(res => res.data)
-    // },
-}
+// export const MockPlaylistsAPI = {
+//     getAll: () => {
+//         return new Promise<GetAllAnswerType>((resolve, reject) => {
+//             const playlists = [
+//                 {
+//                     _id: '1',
+//                     name: 'Курс "React JS - путь самурая 1.0", уроки, практика',
+//                     levelAccess: 0,
+//                     tags: ['react', 'redux',],
+//                     created: new Date().toString(),
+//                     updated: new Date().toString(),
+//                 },
+//                 {
+//                     _id: '2',
+//                     name: '#lesson_01',
+//                     levelAccess: 100,
+//                     tags: ['start', 'component', 'props',],
+//                     created: new Date().toString(),
+//                     updated: new Date().toString(),
+//                 },
+//             ] as PlaylistType[]
+//             setTimeout(() => {
+//                 // ok
+//                 resolve({playlists, playlistsTotalCount: 2})
+//
+//                 // error
+//                 // reject({message: 'x'})
+//             }, 5000)
+//         })
+//     },
+//     add: (data: any) => {
+//         return new Promise<AddAnswerType>((resolve, reject) => {
+//             console.log(data)
+//             setTimeout(() => {
+//                 // ok
+//                 // resolve({})
+//
+//                 // error
+//                 reject({message: 'x'})
+//             }, 5000)
+//         })
+//     },
+// }
