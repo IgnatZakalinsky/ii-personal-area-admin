@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useCallback, useEffect, useState} from 'react'
 import s from './Playlist.module.css'
-import {Button, Input, InputNumber, Tag} from 'antd'
+import {Button, Input, InputNumber, message, Tag} from 'antd'
 import {useSelector} from 'react-redux'
 import {selectApp} from '../../../../i1-main/m2-bll/appReducer'
 import {playlistsActions, playlistsThunks, selectPlaylists} from '../../p2-bll/playlistsReducer'
@@ -40,7 +40,11 @@ const PlaylistFind = () => {
         [setChange, setName]
     )
     const changeTag = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => setTag(e.currentTarget.value),
+        (e: ChangeEvent<HTMLInputElement>) => {
+            const value = e.currentTarget.value
+            if (value.indexOf(',') !== -1) message.warn('del [ , ]')
+            setTag(value.replace(',', ''))
+        },
         [setTag]
     )
     const confirmTag = () => {

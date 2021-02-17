@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useCallback, useState} from 'react'
-import {Button, Input, InputNumber, Modal, Tag} from 'antd'
+import {Button, Input, InputNumber, message, Modal, Tag} from 'antd'
 
 type PlaylistModalPropsType = {
     show: boolean
@@ -32,7 +32,11 @@ const PlaylistModal: React.FC<PlaylistModalPropsType> = (
         [setName]
     )
     const changeTag = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => setTag(e.currentTarget.value),
+        (e: ChangeEvent<HTMLInputElement>) => {
+            const value = e.currentTarget.value
+            if (value.indexOf(',') !== -1) message.warn('del [ , ]')
+            setTag(value.replace(',', ''))
+        },
         [setTag]
     )
     const confirmTag = () => {

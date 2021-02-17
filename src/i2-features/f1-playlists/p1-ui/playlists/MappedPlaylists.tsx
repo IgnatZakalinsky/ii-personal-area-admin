@@ -16,14 +16,14 @@ const MappedPlaylists = () => {
     const {isLoading} = useSelector(selectApp)
     const [showAdd, setShowAdd] = useState(false)
     const {getPlaylists, addPlaylist, setSort} = useActions({...playlistsThunks, ...playlistsActions})
-    const [isChange, setIsChange] = useState(true)
+    const [isChange, setIsChange] = useState(false)
 
     useEffect(() => {
-        if (isChange) {
+        if (isChange && !isLoading) {
             getPlaylists()
             setIsChange(false)
         }
-    }, [isChange, setIsChange, getPlaylists])
+    }, [isLoading, isChange, setIsChange, getPlaylists])
 
     const onAdd = useCallback(() => setShowAdd(true), [setShowAdd])
     const closeAdd = useCallback(() => setShowAdd(false), [setShowAdd])

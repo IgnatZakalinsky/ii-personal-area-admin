@@ -41,7 +41,7 @@ export const PlaylistsAPI = {
                 itemForPageCount,
                 pageNumber,
                 sort,
-                find
+                ...find,
             }
         })
             .then(res => res.data)
