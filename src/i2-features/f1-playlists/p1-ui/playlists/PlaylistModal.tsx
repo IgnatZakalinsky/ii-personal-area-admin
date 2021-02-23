@@ -1,5 +1,6 @@
 import React, {ChangeEvent, useCallback, useState} from 'react'
-import {Button, Input, InputNumber, message, Modal, Tag} from 'antd'
+import {Button, Input, InputNumber, message, Modal, Tag, DatePicker} from 'antd'
+import moment from 'moment'
 
 type PlaylistModalPropsType = {
     show: boolean
@@ -21,6 +22,11 @@ const PlaylistModal: React.FC<PlaylistModalPropsType> = (
     const [tags, setTags] = useState<string[]>(defTags)
     const [isAddingTag, setIsAddingTag] = useState(false)
     const [tag, setTag] = useState('')
+
+    const defStart = moment().unix() * 1000 - (1000 * 60 * 60 * 24 * 366 * 2) // - 2 ears
+    const defEnd = moment().unix() * 1000 + (1000 * 60 * 60 * 24 * 366 * 2) // + 2 ears
+    const [startDate, setStartDate] = useState(defStart)
+    const [endDate, setEndDate] = useState(defEnd)
 
     const clear = useCallback(() => {
         setName('')
@@ -111,6 +117,19 @@ const PlaylistModal: React.FC<PlaylistModalPropsType> = (
                     + New Tag
                 </Tag>
             )}
+
+            <div>start date:</div>
+            <DatePicker
+                onChange={e => setStartDate(e ? e.unix() * 1000 : defStart)}
+                format={'DD/MM/YYYY'}
+                value={moment(startDate)}
+            />
+            <div>end date:</div>
+            <DatePicker
+                onChange={e => setEndDate(e ? e.unix() * 1000 : defEnd)}
+                format={'DD/MM/YYYY'}
+                value={moment(endDate)}
+            />
         </Modal>
     )
 }
