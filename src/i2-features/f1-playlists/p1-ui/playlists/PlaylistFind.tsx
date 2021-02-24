@@ -90,6 +90,10 @@ const PlaylistFind = () => {
 
     return (
         <div className={s.pl}>
+            <div className={s.courseId}>
+                {/*выбор курса + all*/}
+            </div>
+
             <div className={s.name}>
                 <Input value={name} onChange={changeName}/>
             </div>
@@ -119,8 +123,12 @@ const PlaylistFind = () => {
                 )}
             </div>
 
-            <div className={s.updated}/>
-            <div className={s.created}/>
+            {/*доступно для юзеров от/до*/}
+            <div className={s.date}/>
+            <div className={s.date}/>
+
+            <div className={s.date}/>
+            <div className={s.date}/>
 
             <div className={s.buttons}>
                 <Button type="primary" icon={'🔍 '} loading={isLoading} onClick={getPlaylists}>

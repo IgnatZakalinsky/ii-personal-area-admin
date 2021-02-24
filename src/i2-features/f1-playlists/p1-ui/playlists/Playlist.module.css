@@ -7,6 +7,11 @@
     overflow: hidden;
 }
 
+.courseId {
+    min-width: 130px;
+    width: 1vw;
+}
+
 .name {
     min-width: 115px;
     width:15vw;
@@ -15,24 +20,18 @@
 
 .lvl {
     min-width: 99px;
-    width: 15vw;
+    width: 1vw;
 }
 
 .tags {
     min-width: 108px;
-    width: 15vw;
+    width: 10vw;
     overflow: hidden;
 }
 
-.created {
-    min-width: 124px;
-    width: 15vw;
-    overflow: hidden;
-}
-
-.updated {
-    min-width: 130px;
-    width: 15vw;
+.date {
+    min-width: 134px;
+    width: 1vw;
     overflow: hidden;
 }
 
@@ -42,6 +41,6 @@
     flex-wrap: wrap;
 
     min-width: 110px;
-    width: 15vw;
+    width: 9vw;
     overflow: hidden;
 }

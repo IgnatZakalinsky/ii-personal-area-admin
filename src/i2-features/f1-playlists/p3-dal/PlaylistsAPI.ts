@@ -5,6 +5,9 @@ export type ForCreatePlaylistType = {
     name: string
     levelAccess: number
     tags: string[]
+    startDate: number
+    endDate: number
+    courseId: string
 }
 
 export type PlaylistType = {
@@ -13,8 +16,12 @@ export type PlaylistType = {
     name: string
     levelAccess: number
     tags: string[]
+
+    startDate: number
+    endDate: number
+    courseId: string
+
     // position number
-    // start/end date access
 
     created: string
     updated: string

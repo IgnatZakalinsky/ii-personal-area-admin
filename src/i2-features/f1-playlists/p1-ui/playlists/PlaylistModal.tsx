@@ -1,20 +1,33 @@
 import React, {ChangeEvent, useCallback, useState} from 'react'
-import {Button, Input, InputNumber, message, Modal, Tag, DatePicker} from 'antd'
+import {Button, Input, InputNumber, message, Modal, Tag, DatePicker, Select} from 'antd'
 import moment from 'moment'
+import {SelectValue} from "antd/es/select";
+import {Option} from "antd/es/mentions";
 
 type PlaylistModalPropsType = {
     show: boolean
-    callback: (name: string, levelAccess: number, tags: string[]) => void
+    callback: (
+        name: string,
+        levelAccess: number,
+        tags: string[],
+        startDate: number,
+        endDate: number,
+        courseId: string,
+    ) => void
     close: () => void
     defName?: string
     defLevelAccess?: number
     defTags?: string[]
+    defStartDate?: number
+    defEndDate?: number
+    defCourseId?: string
 }
 
 const PlaylistModal: React.FC<PlaylistModalPropsType> = (
     {
         show, callback, close,
-        defName = '', defLevelAccess = 0, defTags = []
+        defName = '', defLevelAccess = 0, defTags = [],
+        defStartDate, defEndDate, defCourseId,
     }
 ) => {
     const [name, setName] = useState(defName)
@@ -25,8 +38,9 @@ const PlaylistModal: React.FC<PlaylistModalPropsType> = (
 
     const defStart = moment().unix() * 1000 - (1000 * 60 * 60 * 24 * 366 * 2) // - 2 ears
     const defEnd = moment().unix() * 1000 + (1000 * 60 * 60 * 24 * 366 * 2) // + 2 ears
-    const [startDate, setStartDate] = useState(defStart)
-    const [endDate, setEndDate] = useState(defEnd)
+    const [startDate, setStartDate] = useState(defStartDate || defStart)
+    const [endDate, setEndDate] = useState(defEndDate || defEnd)
+    const [courseId, setCourseId] = useState(defCourseId || '1')
 
     const clear = useCallback(() => {
         setName('')
@@ -37,6 +51,12 @@ const PlaylistModal: React.FC<PlaylistModalPropsType> = (
         (e: ChangeEvent<HTMLInputElement>) => setName(e.currentTarget.value),
         [setName]
     )
+    const changeCourseId = useCallback(
+        (e: SelectValue) => setCourseId(e.toString()),
+        [setCourseId]
+    )
+
+
     const changeTag = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
             const value = e.currentTarget.value
@@ -56,7 +76,7 @@ const PlaylistModal: React.FC<PlaylistModalPropsType> = (
         [setLevelAccess]
     )
     const onOk = () => {
-        callback(name, levelAccess, tags)
+        callback(name, levelAccess, tags, startDate, endDate, courseId)
     }
 
     const mappedTags = tags.map((t, i) => (
@@ -92,6 +112,11 @@ const PlaylistModal: React.FC<PlaylistModalPropsType> = (
             <div>NEW PLAYLIST</div>
             <Button danger onClick={clear}>clear</Button>
 
+            <div>courseId:</div>
+            <Select value={courseId} onChange={changeCourseId} style={{width: 120}}>
+                <Option value={'1'}>react (1)</Option>
+                <Option value={'2'}>html/css (2)</Option>
+            </Select>
             <div>name:</div>
             <Input value={name} onChange={changeName}/>
 

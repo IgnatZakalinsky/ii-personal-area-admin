@@ -27,12 +27,22 @@ const MappedPlaylists = () => {
 
     const onAdd = useCallback(() => setShowAdd(true), [setShowAdd])
     const closeAdd = useCallback(() => setShowAdd(false), [setShowAdd])
-    const addPlaylistCallback = (name: string, levelAccess: number, tags: string[]) => {
+    const addPlaylistCallback = (
+        name: string,
+        levelAccess: number,
+        tags: string[],
+        startDate: number,
+        endDate: number,
+        courseId: string,
+    ) => {
         addPlaylist({
             playlist: {
                 name,
                 levelAccess,
                 tags,
+                startDate,
+                endDate,
+                courseId,
             }
         })
         closeAdd()
@@ -55,6 +65,11 @@ const MappedPlaylists = () => {
 
                     {/*table header*/}
                     <div className={s2.pl}>
+                        <div className={s.courseId}>
+                            courseId
+                            <Sort sort={sort} onChange={setSortCallback} isLoading={isLoading} propsName={'courseId'}/>
+                        </div>
+
                         <div className={s2.name}>
                             Name
                             <Sort sort={sort} onChange={setSortCallback} isLoading={isLoading} propsName={'name'}/>
@@ -72,14 +87,25 @@ const MappedPlaylists = () => {
                             Tags
                             <Sort sort={sort} onChange={setSortCallback} isLoading={isLoading} propsName={'tags'}/>
                         </div>
-                        <div className={s2.updated}>
+
+                        <div className={s2.date}>
+                            startDate
+                            <Sort sort={sort} onChange={setSortCallback} isLoading={isLoading} propsName={'startDate'}/>
+                        </div>
+                        <div className={s2.date}>
+                            endDate
+                            <Sort sort={sort} onChange={setSortCallback} isLoading={isLoading} propsName={'endDate'}/>
+                        </div>
+
+                        <div className={s2.date}>
                             updated
                             <Sort sort={sort} onChange={setSortCallback} isLoading={isLoading} propsName={'updated'}/>
                         </div>
-                        <div className={s2.created}>
+                        <div className={s2.date}>
                             created
                             <Sort sort={sort} onChange={setSortCallback} isLoading={isLoading} propsName={'created'}/>
                         </div>
+
                         <div className={s2.buttons}>
                             <Button disabled={isLoading} onClick={onAdd}>add</Button>
                         </div>
