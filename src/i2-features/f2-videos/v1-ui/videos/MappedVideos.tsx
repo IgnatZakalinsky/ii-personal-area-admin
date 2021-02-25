@@ -1,70 +1,86 @@
 import React, {useCallback, useEffect, useState} from 'react'
-import s from './MappedPlaylists.module.css'
-import s2 from './Playlist.module.css'
-import Playlist from './Playlist'
+// import s from './MappedPlaylists.module.css'
+import s2 from './Video.module.css'
 import {useSelector} from 'react-redux'
-import {playlistsThunks, selectPlaylists, playlistsActions} from '../../p2-bll/playlistsReducer'
 import {selectApp} from '../../../../i1-main/m2-bll/appReducer'
 import CustomSpin from '../../../../i1-main/m1-ui/u0-common/u5-spins/CustomSpin'
 import {Button, Divider} from 'antd'
-import PlaylistModal from './PlaylistModal'
 import {useActions} from '../../../../i1-main/m2-bll/helpers'
 import Sort from '../../../../i1-main/m1-ui/u0-common/u7-sort/Sort'
+import {selectVideos, videosActions, videosThunks} from '../../v2-bll/videosReducer'
+import Video from './Video'
+import {useParams} from 'react-router-dom'
 
-const MappedPlaylists = () => {
-    const {playlists, sort} = useSelector(selectPlaylists)
+const MappedVideos = () => {
+    const {videos, sort} = useSelector(selectVideos)
     const {isLoading} = useSelector(selectApp)
     const [showAdd, setShowAdd] = useState(false)
-    const {getPlaylists, addPlaylist, setSort} = useActions({...playlistsThunks, ...playlistsActions})
+    const {getVideos, addVideo, setSort} = useActions({...videosThunks, ...videosActions})
     const [isChange, setIsChange] = useState(false)
+    const {playlistId} = useParams<{playlistId: string}>()
 
     useEffect(() => {
         if (isChange && !isLoading) {
-            getPlaylists()
+            getVideos()
             setIsChange(false)
         }
-    }, [isLoading, isChange, setIsChange, getPlaylists])
+    }, [isLoading, isChange, setIsChange, getVideos])
 
-    const onAdd = useCallback(() => setShowAdd(true), [setShowAdd])
-    const closeAdd = useCallback(() => setShowAdd(false), [setShowAdd])
-    const addPlaylistCallback = (
-        name: string,
-        levelAccess: number,
-        tags: string[],
-        startDate: number,
-        endDate: number,
-        courseId: string,
-    ) => {
-        addPlaylist({
-            playlist: {
-                name,
-                levelAccess,
-                tags,
-                startDate,
-                endDate,
-                courseId,
-            }
-        })
-        closeAdd()
-    }
+    const onAdd = useCallback(() => {
+        addVideo({
+                    video: {
+                        name: 'test',
+                        levelAccess: 0,
+                        tags: [],
+                        startDate: 0,
+                        endDate: 0,
+                        courseId: '1',
+                        playlistId,
+                        url: 'http://hz',
+                    }
+                })
+    }, [playlistId])
+    // const onAdd = useCallback(() => setShowAdd(true), [setShowAdd])
+    // const closeAdd = useCallback(() => setShowAdd(false), [setShowAdd])
+    // const addPlaylistCallback = (
+    //     name: string,
+    //     levelAccess: number,
+    //     tags: string[],
+    //     startDate: number,
+    //     endDate: number,
+    //     courseId: string,
+    // ) => {
+    //     addPlaylist({
+    //         playlist: {
+    //             name,
+    //             levelAccess,
+    //             tags,
+    //             startDate,
+    //             endDate,
+    //             courseId,
+    //         }
+    //     })
+    //     closeAdd()
+    // }
     const setSortCallback = (s: string) => {
         setSort({sort: s})
         setIsChange(true)
     }
 
-    const mappedPlaylists = playlists.map(p => (<Playlist key={p._id} playlist={p}/>))
+    const mappedVideos = videos.map(v => (<Video key={v._id} video={v}/>))
 
     return (
-        <div className={s.main}>
-
-            {isLoading && !playlists.length ? (
+        <div>
+        {/*<div className={s.main}>*/}
+            V
+            {isLoading && !videos.length ? (
                 <CustomSpin/>
             ) : (
                 <>
-                    <PlaylistModal show={showAdd} callback={addPlaylistCallback} close={closeAdd}/>
+                    {/*<PlaylistModal show={showAdd} callback={addPlaylistCallback} close={closeAdd}/>*/}
 
                     {/*table header*/}
-                    <div className={s2.pl}>
+                    <div className={s2.vi}>
                         <div className={s2.courseId}>
                             courseId
                             <Sort sort={sort} onChange={setSortCallback} isLoading={isLoading} propsName={'courseId'}/>
@@ -112,7 +128,7 @@ const MappedPlaylists = () => {
                     </div>
                     <Divider/>
 
-                    {mappedPlaylists}
+                    {mappedVideos}
                 </>
             )}
 
@@ -120,4 +136,4 @@ const MappedPlaylists = () => {
     )
 }
 
-export default MappedPlaylists
+export default MappedVideos
