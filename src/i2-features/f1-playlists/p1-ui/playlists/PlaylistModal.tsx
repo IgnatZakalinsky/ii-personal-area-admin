@@ -46,6 +46,9 @@ const PlaylistModal: React.FC<PlaylistModalPropsType> = (
         setName('')
         setLevelAccess(0)
         setTags([])
+        setStartDate(defStart)
+        setEndDate(defEnd)
+        setCourseId('1')
     }, [setName, setLevelAccess, setTags])
     const changeName = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => setName(e.currentTarget.value),
