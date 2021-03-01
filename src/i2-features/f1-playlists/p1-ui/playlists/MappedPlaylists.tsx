@@ -66,7 +66,7 @@ const MappedPlaylists = () => {
                     {/*table header*/}
                     <div className={s2.pl}>
                         <div className={s2.courseId}>
-                            courseId
+                            c_id
                             <Sort sort={sort} onChange={setSortCallback} isLoading={isLoading} propsName={'courseId'}/>
                         </div>
 

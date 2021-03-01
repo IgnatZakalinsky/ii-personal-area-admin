@@ -4,7 +4,7 @@ import moment from 'moment'
 import {SelectValue} from 'antd/es/select'
 import {Option} from 'antd/es/mentions'
 
-type PlaylistModalPropsType = {
+type VideoModalPropsType = {
     show: boolean
     callback: (
         name: string,
@@ -13,9 +13,13 @@ type PlaylistModalPropsType = {
         startDate: number,
         endDate: number,
         courseId: string,
+        url: string,
+        playlistId: string,
     ) => void
     close: () => void
     defName?: string
+    defUrl?: string
+    defPlaylistId?: string
     defLevelAccess?: number
     defTags?: string[]
     defStartDate?: number
@@ -23,11 +27,12 @@ type PlaylistModalPropsType = {
     defCourseId?: string
 }
 
-const PlaylistModal: React.FC<PlaylistModalPropsType> = (
+const VideoModal: React.FC<VideoModalPropsType> = (
     {
         show, callback, close,
         defName = '', defLevelAccess = 0, defTags = [],
-        defStartDate, defEndDate, defCourseId,
+        defStartDate, defEndDate, defCourseId, defUrl = '',
+        defPlaylistId = ''
     }
 ) => {
     const [name, setName] = useState(defName)
@@ -35,6 +40,7 @@ const PlaylistModal: React.FC<PlaylistModalPropsType> = (
     const [tags, setTags] = useState<string[]>(defTags)
     const [isAddingTag, setIsAddingTag] = useState(false)
     const [tag, setTag] = useState('')
+    const [url, setUrl] = useState(defUrl)
 
     const defStart = moment().unix() * 1000 - (1000 * 60 * 60 * 24 * 366 * 2) // - 2 ears
     const defEnd = moment().unix() * 1000 + (1000 * 60 * 60 * 24 * 366 * 2) // + 2 ears
@@ -54,11 +60,15 @@ const PlaylistModal: React.FC<PlaylistModalPropsType> = (
         (e: ChangeEvent<HTMLInputElement>) => setName(e.currentTarget.value),
         [setName]
     )
+    const changeUrl = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => setUrl(e.currentTarget.value),
+        [setUrl]
+    )
+
     const changeCourseId = useCallback(
         (e: SelectValue) => setCourseId(e.toString()),
         [setCourseId]
     )
-
 
     const changeTag = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
@@ -79,7 +89,7 @@ const PlaylistModal: React.FC<PlaylistModalPropsType> = (
         [setLevelAccess]
     )
     const onOk = () => {
-        callback(name, levelAccess, tags, startDate, endDate, courseId)
+        callback(name, levelAccess, tags, startDate, endDate, courseId, url, defPlaylistId)
     }
 
     const mappedTags = tags.map((t, i) => (
@@ -109,10 +119,10 @@ const PlaylistModal: React.FC<PlaylistModalPropsType> = (
         <Modal
             visible={show}
             onOk={onOk}
-            okButtonProps={{disabled: !name}}
+            okButtonProps={{disabled: !name || !url}}
             onCancel={close}
         >
-            <div>NEW PLAYLIST</div>
+            <div>NEW VIDEO</div>
             <Button danger onClick={clear}>clear</Button>
 
             <div>courseId:</div>
@@ -120,8 +130,17 @@ const PlaylistModal: React.FC<PlaylistModalPropsType> = (
                 <Option value={'1'}>react (1)</Option>
                 <Option value={'2'}>html/css (2)</Option>
             </Select>
+
+            <div>playlistId:</div>
+            <div>
+                {defPlaylistId}
+            </div>
+
             <div>name:</div>
             <Input value={name} onChange={changeName}/>
+
+            <div>url:</div>
+            <Input value={url} onChange={changeUrl}/>
 
             <div>level access:</div>
             <InputNumber min={0} value={levelAccess} onChange={changeLevelAccess}/>
@@ -162,4 +181,4 @@ const PlaylistModal: React.FC<PlaylistModalPropsType> = (
     )
 }
 
-export default PlaylistModal
+export default VideoModal

@@ -8,13 +8,13 @@
 }
 
 .courseId {
-    min-width: 130px;
+    min-width: 107px;
     width: 1vw;
 }
 
 .name {
-    min-width: 115px;
-    width:15vw;
+    min-width: 120px;
+    width: 15vw;
     overflow: hidden;
 }
 
@@ -24,13 +24,13 @@
 }
 
 .tags {
-    min-width: 108px;
+    min-width: 110px;
     width: 10vw;
     overflow: hidden;
 }
 
 .date {
-    min-width: 134px;
+    min-width: 139px;
     width: 1vw;
     overflow: hidden;
 }

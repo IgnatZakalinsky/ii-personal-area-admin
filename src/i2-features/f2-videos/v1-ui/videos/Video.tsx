@@ -1,56 +1,61 @@
 import React, {useCallback, useState} from 'react'
 import s from './Video.module.css'
-import {PATH} from '../../../../i1-main/m1-ui/u3-routes/Routes'
 import {Button, Divider, Modal} from 'antd'
 import {useSelector} from 'react-redux'
 import {selectApp} from '../../../../i1-main/m2-bll/appReducer'
 import {useActions} from '../../../../i1-main/m2-bll/helpers'
 import {VideoType} from '../../v3-dal/VideosAPI'
+import {videosThunks} from '../../v2-bll/videosReducer'
+import VideoModal from './VideoModal'
 
 type VideoPropsType = {
     video: VideoType
 }
 
 const Video: React.FC<VideoPropsType> = React.memo(({video}) => {
-    // const [showDel, setShowDel] = useState(false)
-    // const [showUpd, setShowUpd] = useState(false)
-    // const {deletePlaylist, updatePlaylist} = useActions(playlistsThunks)
+    const [showDel, setShowDel] = useState(false)
+    const [showUpd, setShowUpd] = useState(false)
+    const {deleteVideo, updateVideo} = useActions(videosThunks)
     const {isLoading} = useSelector(selectApp)
 
     const mappedTags = video.tags.map((t, i) => (
         <span key={video._id + i}>#{t} </span>
     ))
 
-    // const onDel = useCallback(() => setShowDel(true), [setShowDel])
-    // const closeDel = useCallback(() => setShowDel(false), [setShowDel])
-    // const delPlaylist = () => {
-    //     deletePlaylist({id: playlist._id})
-    //
-    //     closeDel()
-    // }
-    // const onUpd = useCallback(() => setShowUpd(true), [setShowUpd])
-    // const closeUpd = useCallback(() => setShowUpd(false), [setShowUpd])
-    // const updPlaylistCallback = (
-    //     name: string,
-    //     levelAccess: number,
-    //     tags: string[],
-    //     startDate: number,
-    //     endDate: number,
-    //     courseId: string,
-    //     ) => {
-    //     updatePlaylist({
-    //         playlist: {
-    //             ...playlist,
-    //             name,
-    //             levelAccess,
-    //             tags,
-    //             startDate,
-    //             endDate,
-    //             courseId,
-    //         }
-    //     })
-    //     closeUpd()
-    // }
+    const onDel = useCallback(() => setShowDel(true), [setShowDel])
+    const closeDel = useCallback(() => setShowDel(false), [setShowDel])
+    const delPlaylist = () => {
+        deleteVideo({id: video._id})
+
+        closeDel()
+    }
+    const onUpd = useCallback(() => setShowUpd(true), [setShowUpd])
+    const closeUpd = useCallback(() => setShowUpd(false), [setShowUpd])
+    const updPlaylistCallback = (
+        name: string,
+        levelAccess: number,
+        tags: string[],
+        startDate: number,
+        endDate: number,
+        courseId: string,
+        url: string,
+        playlistId: string,
+        ) => {
+        updateVideo({
+            video: {
+                ...video,
+                name,
+                levelAccess,
+                tags,
+                startDate,
+                endDate,
+                courseId,
+                url,
+                playlistId,
+            }
+        })
+        closeUpd()
+    }
 
     const updated = new Date(video.updated).toLocaleDateString()
     const created = new Date(video.created).toLocaleDateString()
@@ -60,30 +65,36 @@ const Video: React.FC<VideoPropsType> = React.memo(({video}) => {
 
     return (
         <>
-            {/*{showUpd && (*/}
-            {/*    <PlaylistModal*/}
-            {/*        show={showUpd}*/}
-            {/*        callback={updPlaylistCallback}*/}
-            {/*        close={closeUpd}*/}
-            {/*        defName={playlist.name}*/}
-            {/*        defLevelAccess={playlist.levelAccess}*/}
-            {/*        defTags={playlist.tags}*/}
-            {/*    />*/}
-            {/*)}*/}
-            {/*<Modal*/}
-            {/*    visible={showDel}*/}
-            {/*    onOk={delPlaylist}*/}
-            {/*    onCancel={closeDel}*/}
-            {/*>*/}
-            {/*    delete playlist {playlist.name}?*/}
-            {/*</Modal>*/}
+            {showUpd && (
+                <VideoModal
+                    show={showUpd}
+                    callback={updPlaylistCallback}
+                    close={closeUpd}
+                    defName={video.name}
+                    defLevelAccess={video.levelAccess}
+                    defTags={video.tags}
+                    defPlaylistId={video.playlistId}
+                    defUrl={video.url}
+                />
+            )}
+            <Modal
+                visible={showDel}
+                onOk={delPlaylist}
+                onCancel={closeDel}
+            >
+                delete video {video.name}?
+            </Modal>
 
             <div className={s.vi}>
                 <div className={s.courseId}>
                     {video.courseId}
                 </div>
+                <div className={s.playlistId}>
+                    {video.playlistId}
+                </div>
 
                 <div className={s.name}>{video.name}</div>
+                <div className={s.url}>{video.url}</div>
                 {/*<NavLink to={PATH.VIDEOS + '/' + video._id} className={s.name}>{video.name}</NavLink>*/}
 
                 <div className={s.lvl}>{video.levelAccess}</div>
@@ -97,8 +108,8 @@ const Video: React.FC<VideoPropsType> = React.memo(({video}) => {
                 <div className={s.date}>{created}</div>
 
                 <div className={s.buttons}>
-                    {/*<Button disabled={isLoading} onClick={onUpd}>upd</Button>*/}
-                    {/*<Button disabled={isLoading} danger onClick={onDel}>del</Button>*/}
+                    <Button disabled={isLoading} onClick={onUpd}>upd</Button>
+                    <Button disabled={isLoading} danger onClick={onDel}>del</Button>
                 </div>
             </div>
             <Divider/>

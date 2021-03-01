@@ -8,13 +8,24 @@
 }
 
 .courseId {
-    min-width: 130px;
+    min-width: 107px;
+    width: 1vw;
+}
+
+.playlistId {
+    min-width: 180px;
     width: 1vw;
 }
 
 .name {
-    min-width: 115px;
-    width:15vw;
+    min-width: 120px;
+    width: 7vw;
+    overflow: hidden;
+}
+
+.url {
+    min-width: 101px;
+    width: 7vw;
     overflow: hidden;
 }
 
@@ -24,13 +35,13 @@
 }
 
 .tags {
-    min-width: 108px;
-    width: 10vw;
+    min-width: 110px;
+    width: 7vw;
     overflow: hidden;
 }
 
 .date {
-    min-width: 134px;
+    min-width: 139px;
     width: 1vw;
     overflow: hidden;
 }

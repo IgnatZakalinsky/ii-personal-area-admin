@@ -10,6 +10,7 @@ import Sort from '../../../../i1-main/m1-ui/u0-common/u7-sort/Sort'
 import {selectVideos, videosActions, videosThunks} from '../../v2-bll/videosReducer'
 import Video from './Video'
 import {useParams} from 'react-router-dom'
+import VideoModal from './VideoModal'
 
 const MappedVideos = () => {
     const {videos, sort} = useSelector(selectVideos)
@@ -26,42 +27,46 @@ const MappedVideos = () => {
         }
     }, [isLoading, isChange, setIsChange, getVideos])
 
-    const onAdd = useCallback(() => {
+    // const onAdd = useCallback(() => {
+    //     addVideo({
+    //                 video: {
+    //                     name: 'test',
+    //                     levelAccess: 0,
+    //                     tags: [],
+    //                     startDate: 0,
+    //                     endDate: 0,
+    //                     courseId: '1',
+    //                     playlistId,
+    //                     url: 'http://hz',
+    //                 }
+    //             })
+    // }, [playlistId])
+    const onAdd = useCallback(() => setShowAdd(true), [setShowAdd])
+    const closeAdd = useCallback(() => setShowAdd(false), [setShowAdd])
+    const addPlaylistCallback = (
+        name: string,
+        levelAccess: number,
+        tags: string[],
+        startDate: number,
+        endDate: number,
+        courseId: string,
+        url: string,
+        playlistId: string,
+    ) => {
         addVideo({
-                    video: {
-                        name: 'test',
-                        levelAccess: 0,
-                        tags: [],
-                        startDate: 0,
-                        endDate: 0,
-                        courseId: '1',
-                        playlistId,
-                        url: 'http://hz',
-                    }
-                })
-    }, [playlistId])
-    // const onAdd = useCallback(() => setShowAdd(true), [setShowAdd])
-    // const closeAdd = useCallback(() => setShowAdd(false), [setShowAdd])
-    // const addPlaylistCallback = (
-    //     name: string,
-    //     levelAccess: number,
-    //     tags: string[],
-    //     startDate: number,
-    //     endDate: number,
-    //     courseId: string,
-    // ) => {
-    //     addPlaylist({
-    //         playlist: {
-    //             name,
-    //             levelAccess,
-    //             tags,
-    //             startDate,
-    //             endDate,
-    //             courseId,
-    //         }
-    //     })
-    //     closeAdd()
-    // }
+            video: {
+                name,
+                levelAccess,
+                tags,
+                startDate,
+                endDate,
+                courseId,
+                url,
+                playlistId,
+            }
+        })
+        closeAdd()
+    }
     const setSortCallback = (s: string) => {
         setSort({sort: s})
         setIsChange(true)
@@ -77,12 +82,21 @@ const MappedVideos = () => {
                 <CustomSpin/>
             ) : (
                 <>
-                    {/*<PlaylistModal show={showAdd} callback={addPlaylistCallback} close={closeAdd}/>*/}
+                    <VideoModal
+                        show={showAdd}
+                        callback={addPlaylistCallback}
+                        close={closeAdd}
+                        defPlaylistId={playlistId}
+                    />
 
                     {/*table header*/}
                     <div className={s2.vi}>
                         <div className={s2.courseId}>
-                            courseId
+                            c_id
+                            <Sort sort={sort} onChange={setSortCallback} isLoading={isLoading} propsName={'courseId'}/>
+                        </div>
+                        <div className={s2.playlistId}>
+                            playlistId
                             <Sort sort={sort} onChange={setSortCallback} isLoading={isLoading} propsName={'courseId'}/>
                         </div>
 
@@ -90,6 +104,13 @@ const MappedVideos = () => {
                             Name
                             <Sort sort={sort} onChange={setSortCallback} isLoading={isLoading} propsName={'name'}/>
                         </div>
+
+                        <div className={s2.url}>
+                            Url
+                            <Sort sort={sort} onChange={setSortCallback} isLoading={isLoading} propsName={'name'}/>
+                        </div>
+
+
                         <div className={s2.lvl}>
                             Lvl
                             <Sort

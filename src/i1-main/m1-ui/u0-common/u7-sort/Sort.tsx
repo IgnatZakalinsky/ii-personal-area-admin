@@ -14,7 +14,13 @@ const Sort: React.FC<SortPropsType> = ({sort, onChange, propsName, isLoading}) =
 
     return (
         <>
-            <Button type={up} onClick={() => onChange(1 + propsName)} disabled={isLoading} ghost>
+            <Button
+                type={up}
+                onClick={() => onChange(1 + propsName)}
+                disabled={isLoading}
+                ghost
+                style={{marginLeft: 5}}
+            >
                 ↑
             </Button>
             <Button type={down} onClick={() => onChange(0 + propsName)} disabled={isLoading} ghost>
