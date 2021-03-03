@@ -37,7 +37,7 @@ const Header = React.memo(() => {
                     isVerified && (
                         <NavLink to={PATH.PLAYLISTS} key={PATH.PLAYLISTS} onClick={onClick}>PLAYLISTS</NavLink>
                     ),
-
+                    // <NavLink to={PATH.VIDEOS} key={PATH.VIDEOS} onClick={onClick}>VIDEOS</NavLink>,
                 ]}
             />
             <Divider/>

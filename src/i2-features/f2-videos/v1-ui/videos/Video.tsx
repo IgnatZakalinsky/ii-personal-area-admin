@@ -17,6 +17,9 @@ const Video: React.FC<VideoPropsType> = React.memo(({video}) => {
     const [showUpd, setShowUpd] = useState(false)
     const {deleteVideo, updateVideo} = useActions(videosThunks)
     const {isLoading} = useSelector(selectApp)
+    const [isShow, setShow] = useState(false)
+
+    const setShowSwitch = () => setShow(s => !s)
 
     const mappedTags = video.tags.map((t, i) => (
         <span key={video._id + i}>#{t} </span>
@@ -93,7 +96,7 @@ const Video: React.FC<VideoPropsType> = React.memo(({video}) => {
                     {video.playlistId}
                 </div>
 
-                <div className={s.name}>{video.name}</div>
+                <div className={s.name} onClick={setShowSwitch}>{video.name}</div>
                 <div className={s.url}>{video.url}</div>
                 {/*<NavLink to={PATH.VIDEOS + '/' + video._id} className={s.name}>{video.name}</NavLink>*/}
 
@@ -112,6 +115,16 @@ const Video: React.FC<VideoPropsType> = React.memo(({video}) => {
                     <Button disabled={isLoading} danger onClick={onDel}>del</Button>
                 </div>
             </div>
+            {isShow && (
+                <iframe
+                    width='560'
+                    height='315'
+                    src={video.url} // ?start=61 (1:01)
+                    frameBorder='0'
+                    allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                    allowFullScreen
+                />
+            )}
             <Divider/>
         </>
     )

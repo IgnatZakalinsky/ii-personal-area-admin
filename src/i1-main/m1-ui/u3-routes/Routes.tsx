@@ -18,6 +18,7 @@ const Routes = () => {
             <Route
                 path={PATH.VIDEOS + '/:playlistId?'}
                 render={() => <AuthRedirectPage><VideosPage/></AuthRedirectPage>}
+                // render={() => <VideosPage/>}
             />
 
             <Route render={() => <AuthRedirectPage><div>404</div></AuthRedirectPage>}/>

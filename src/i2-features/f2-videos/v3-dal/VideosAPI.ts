@@ -44,7 +44,7 @@ export const VideosAPI = {
         itemForPageCount: number,
         pageNumber: number,
         sort: string,
-        find: { levelAccess: number, tags: string[], name: string }
+        find: { levelAccess: number, tags: string[], name: string, playlistId: string }
     ) => {
         const token = restoreState(PERS_AREA_ADMIN_TOKEN, '')
 
@@ -63,7 +63,7 @@ export const VideosAPI = {
         const token = restoreState(PERS_AREA_ADMIN_TOKEN, '')
 
         return instance.post<AddAnswerType>('videos', {
-            video: data,
+            video: {...data, playlistId: data.playlistId || 'xxx'},
             token,
         })
             .then(res => res.data)

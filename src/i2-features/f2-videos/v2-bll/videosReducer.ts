@@ -17,9 +17,12 @@ export const getVideos = createAsyncThunk<GetVideosType, {}, { rejectValue: { er
     ) => {
         return thunkTryCatch(thunkAPI, async () => {
             const {videos} = thunkAPI.getState() as AppStoreType
-            const {itemForPageCount, pageNumber, sort, levelAccess, tags, name} = videos
+            const {itemForPageCount, pageNumber, sort, levelAccess, tags, name, playlistId} = videos
 
-            const p = await VideosAPI.getAll(itemForPageCount, pageNumber, sort, {levelAccess, tags, name})
+            const p = await VideosAPI.getAll(
+                itemForPageCount, pageNumber, sort,
+                {levelAccess, tags, name, playlistId}
+            )
 
             thunkAPI.dispatch(appActions.setLoading({isLoading: false}))
 
@@ -72,6 +75,7 @@ export const updateVideo = createAsyncThunk<{}, { video: VideoType }, { rejectVa
 const slice = createSlice({
     name: 'videos',
     initialState: {
+        playlistId: '',
         videos: [] as VideoType[],
         videosTotalCount: 0,
         itemForPageCount: 7000,
@@ -100,6 +104,9 @@ const slice = createSlice({
         },
         setLevelAccess: (state, action: PayloadAction<{ levelAccess: number }>) => {
             state.levelAccess = action.payload.levelAccess
+        },
+        setPlaylistId: (state, action: PayloadAction<{ playlistId: string }>) => {
+            state.playlistId = action.payload.playlistId
         },
 
     },

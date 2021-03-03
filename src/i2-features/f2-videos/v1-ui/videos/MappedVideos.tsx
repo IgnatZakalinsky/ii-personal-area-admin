@@ -13,19 +13,23 @@ import {useParams} from 'react-router-dom'
 import VideoModal from './VideoModal'
 
 const MappedVideos = () => {
-    const {videos, sort} = useSelector(selectVideos)
+    const {videos, sort, playlistId: plId} = useSelector(selectVideos)
     const {isLoading} = useSelector(selectApp)
     const [showAdd, setShowAdd] = useState(false)
-    const {getVideos, addVideo, setSort} = useActions({...videosThunks, ...videosActions})
+    const {getVideos, addVideo, setSort, setPlaylistId} = useActions({...videosThunks, ...videosActions})
     const [isChange, setIsChange] = useState(false)
     const {playlistId} = useParams<{playlistId: string}>()
 
     useEffect(() => {
-        if (isChange && !isLoading) {
+        if (isChange && !isLoading && ((playlistId === plId) || (plId === 'all'))) {
             getVideos()
             setIsChange(false)
         }
-    }, [isLoading, isChange, setIsChange, getVideos])
+    }, [isLoading, isChange, setIsChange, getVideos, plId, playlistId])
+
+    useEffect(() => {
+        if (playlistId && (plId !== 'all') && (playlistId !== plId)) setPlaylistId({playlistId})
+    }, [playlistId, plId, setPlaylistId])
 
     // const onAdd = useCallback(() => {
     //     addVideo({
@@ -77,7 +81,7 @@ const MappedVideos = () => {
     return (
         <div>
         {/*<div className={s.main}>*/}
-            V
+            <div>Playlist id: {playlistId || 'all'}</div>
             {isLoading && !videos.length ? (
                 <CustomSpin/>
             ) : (

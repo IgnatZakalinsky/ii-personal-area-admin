@@ -21,6 +21,8 @@
     min-width: 120px;
     width: 7vw;
     overflow: hidden;
+    cursor: pointer;
+    color: aqua;
 }
 
 .url {
