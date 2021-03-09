@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useCallback, useState} from 'react'
-import {Button, Input, InputNumber, message, Modal, Tag, DatePicker, Select} from 'antd'
+import {Button, Input, InputNumber, message, Modal, Tag, DatePicker, Select, Checkbox} from 'antd'
 import moment from 'moment'
 import {SelectValue} from 'antd/es/select'
 import {Option} from 'antd/es/mentions'
@@ -41,6 +41,7 @@ const VideoModal: React.FC<VideoModalPropsType> = (
     const [isAddingTag, setIsAddingTag] = useState(false)
     const [tag, setTag] = useState('')
     const [url, setUrl] = useState(defUrl)
+    const [auto, setAuto] = useState(true)
 
     const defStart = moment().unix() * 1000 - (1000 * 60 * 60 * 24 * 366 * 2) // - 2 ears
     const defEnd = moment().unix() * 1000 + (1000 * 60 * 60 * 24 * 366 * 2) // + 2 ears
@@ -55,13 +56,19 @@ const VideoModal: React.FC<VideoModalPropsType> = (
         setStartDate(defStart)
         setEndDate(defEnd)
         setCourseId('1')
+        setAuto(true)
     }, [setName, setLevelAccess, setTags])
     const changeName = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => setName(e.currentTarget.value),
         [setName]
     )
     const changeUrl = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => setUrl(e.currentTarget.value),
+        (e: ChangeEvent<HTMLInputElement>) => {
+            let value = e.currentTarget.value
+            if (auto) value = value.replace('watch?v=', 'embed/')
+
+            setUrl(value)
+        },
         [setUrl]
     )
 
@@ -140,6 +147,10 @@ const VideoModal: React.FC<VideoModalPropsType> = (
             <Input value={name} onChange={changeName}/>
 
             <div>url:</div>
+            <div onClick={() => setAuto(!auto)}>
+                <Checkbox checked={auto}/>
+                <span style={{cursor: "pointer"}}> auto 'watch?v=' ={'>'} 'embed/' for YouTube</span>
+            </div>
             <Input value={url} onChange={changeUrl}/>
 
             <div>level access:</div>
