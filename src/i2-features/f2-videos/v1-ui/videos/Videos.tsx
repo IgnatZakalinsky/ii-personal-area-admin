@@ -6,6 +6,7 @@ import {selectApp} from '../../../../i1-main/m2-bll/appReducer'
 import {selectVideos, videosActions, videosThunks} from '../../v2-bll/videosReducer'
 import MappedVideos from './MappedVideos'
 import VideoFind from './VideoFind'
+import VideoPagination from './VideoPagination'
 
 const Videos = () => {
     const {name, tags, levelAccess, sort, pageNumber, itemForPageCount} = useSelector(selectVideos)
@@ -89,12 +90,12 @@ const Videos = () => {
             <VideoFind/>
             <br/>
 
-            {/*<PlaylistPagination/>*/}
-            {/*<br/>*/}
+            <VideoPagination/>
+            <br/>
 
             <MappedVideos/>
 
-            {/*<PlaylistPagination/>*/}
+            <VideoPagination/>
         </>
     )
 }

@@ -78,7 +78,7 @@ const slice = createSlice({
         playlistId: '',
         videos: [] as VideoType[],
         videosTotalCount: 0,
-        itemForPageCount: 7000,
+        itemForPageCount: 7,
         pageNumber: 1,
         sort: '0updated',
         name: '',
