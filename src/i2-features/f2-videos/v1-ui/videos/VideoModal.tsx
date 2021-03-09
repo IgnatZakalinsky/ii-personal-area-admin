@@ -140,7 +140,7 @@ const VideoModal: React.FC<VideoModalPropsType> = (
 
             <div>playlistId:</div>
             <div>
-                {defPlaylistId}
+                {defPlaylistId || 'all'}
             </div>
 
             <div>name:</div>

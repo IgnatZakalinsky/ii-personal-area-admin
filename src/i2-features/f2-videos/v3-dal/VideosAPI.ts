@@ -63,7 +63,7 @@ export const VideosAPI = {
         const token = restoreState(PERS_AREA_ADMIN_TOKEN, '')
 
         return instance.post<AddAnswerType>('videos', {
-            video: {...data, playlistId: data.playlistId || 'xxx'},
+            video: {...data, playlistId: data.playlistId || 'all'},
             token,
         })
             .then(res => res.data)

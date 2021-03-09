@@ -19,17 +19,22 @@ const MappedVideos = () => {
     const {getVideos, addVideo, setSort, setPlaylistId} = useActions({...videosThunks, ...videosActions})
     const [isChange, setIsChange] = useState(false)
     const {playlistId} = useParams<{playlistId: string}>()
+    const [isFirstRendering, setFirstRendering] = useState(true)
 
     useEffect(() => {
-        if (isChange && !isLoading && ((playlistId === plId) || (plId === 'all'))) {
+        if (isChange && !isLoading && ((playlistId === plId) || (!playlistId))) {
             getVideos()
             setIsChange(false)
         }
     }, [isLoading, isChange, setIsChange, getVideos, plId, playlistId])
 
     useEffect(() => {
-        if (playlistId && (plId !== 'all') && (playlistId !== plId)) setPlaylistId({playlistId})
-    }, [playlistId, plId, setPlaylistId])
+        if ((playlistId || '') !== plId) {
+            setPlaylistId({playlistId: playlistId || ''})
+            !isFirstRendering && setIsChange(true)
+        }
+        if (isFirstRendering) setFirstRendering(false)
+    }, [playlistId, plId, setPlaylistId, setIsChange])
 
     // const onAdd = useCallback(() => {
     //     addVideo({
@@ -81,7 +86,6 @@ const MappedVideos = () => {
     return (
         <div>
         {/*<div className={s.main}>*/}
-            <div>Playlist id: {playlistId || 'all'}</div>
             {isLoading && !videos.length ? (
                 <CustomSpin/>
             ) : (
@@ -111,7 +115,7 @@ const MappedVideos = () => {
 
                         <div className={s2.url}>
                             Url
-                            <Sort sort={sort} onChange={setSortCallback} isLoading={isLoading} propsName={'name'}/>
+                            <Sort sort={sort} onChange={setSortCallback} isLoading={isLoading} propsName={'url'}/>
                         </div>
 
 
