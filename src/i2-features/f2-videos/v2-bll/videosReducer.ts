@@ -83,7 +83,7 @@ const slice = createSlice({
         sort: '0updated',
         name: '',
         tags: [] as string[],
-        levelAccess: 0,
+        levelAccess: 100,
     },
     reducers: {
         // setX: (state, action: PayloadAction<{ x: number }>) => {
